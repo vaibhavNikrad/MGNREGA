@@ -1,20 +1,18 @@
-package com.Main;
 
-import java.util.List;
-import java.util.Scanner;
+package Dashboard;
 
-import com.Model.BDO;
-import com.Model.Employee;
-import com.Model.GpmMember;
-import com.Model.Project;
-import com.Usecase.BDOfunction;
-import com.Usecase.GpmFunctions;
+//This will provide all the dashboard services to navigate the db managemenet
 
-public class ControlPanel {
+import java.util.*;
+import Beans.*;
+import funBDO.*;
+import funGPM.*;
 
-public static Scanner sc = new Scanner(System.in);
+public class dsahBoard {
 	
-	public static BDOfunction funBDO = new BDOfunction();
+	public static Scanner sc = new Scanner(System.in);
+	
+	public static functionsdbo funBDO = new functionsdbo();
 	
 	public static void main(String[] args) {
 		mnPortal();
@@ -71,7 +69,7 @@ public static Scanner sc = new Scanner(System.in);
     	      System.out.println("ENTER YOUR PASSWORD");
     	      String pass = sc.next();
     	      
-    	      if(BDOfunction.loginBDO(user, pass)) {
+    	      if(funBDO.loginBDO(user, pass)) {
 //    		      Accesing the functionality of BDO
         	      bdofunctiond(); 
     	      }else {
@@ -89,8 +87,7 @@ public static Scanner sc = new Scanner(System.in);
  			System.out.println("Enter BDO password");
  			String pass = sc.next();
  			
- 	       BDO bdo1 = new BDO(0, nam, user, pass);
- 	       
+ 			BDObean bdo1 = new BDObean(null, nam, user, pass);
  			
  			funBDO.insertBDO(bdo1);
 // 			redirect to bdo portal
@@ -142,27 +139,15 @@ public static Scanner sc = new Scanner(System.in);
     			System.out.println("Enter Project Date Of End in YYYY-MM-DD");
     			String doe = sc.next();
     	
-//    			Project pro = new Project(doe, nam, empReq, cost, wage, empReq, out, dos, doe, nam);
-//    			Project pro = new Project(null,doe, nam, empReq, cost, wage, empReq, out, dos, doe, nam);
-//    			Project pro = new Project(null,nam,cost,wage,empReq,cost, dos,null,curBDO, nam);
-    			Project pro = new Project();
-    		pro.setProjectName(nam);
-    		pro.setTaotalBudget(empReq);
-    		pro.setWagePerEmp(wage);
-    		pro.setRequiredEmployee(empReq);
-    		pro.setStartingDate(out);
-    		pro.setEndDate(out);
-    		
-//    			funBDO.createProject(pro);
-//    			funBDO.createProject(pro);
-    			BDOfunction.createProject(pro);
+    			PROJECTbean pro = new PROJECTbean(null, nam, cost, cost, wage, empReq, dos, doe, null, curBDO);
+    			funBDO.createProject(pro);
     	    break;
     	  case "2":
     		//Viewing project list
     		  System.out.println("\r\n"+"The Project List"+"\r\n"+"--------------------------------------------");
-    		 List<Project> poj = funBDO.viewProjectList(curBDO);
+    		  List<PROJECTbean> poj = funBDO.viewProjectList(curBDO);
     		  
-    		  for (Project projecTbean : poj) {
+    		  for (PROJECTbean projecTbean : poj) {
 				System.out.println(projecTbean);
 			}
     		  
@@ -177,19 +162,16 @@ public static Scanner sc = new Scanner(System.in);
     			System.out.println("Enter Password");
     			String pass = sc.next();
     		
-    			GpmMember gpm1 = new GpmMember( null,name, user, pass,curBDO, null);
-    			
-    			
-//    			funBDO.insertGPM(gpm1);
-    			funBDO.insertGPM(null);
+    			GPMbean gpm1 = new GPMbean(null, name, user, pass, curBDO, null);
+    			funBDO.insertGPM(gpm1);
     			
     	    break;
     	  case "4":
     		//viewing list of gpm
     			System.out.println("\r\n"+"The Gram Panchayat Member List"+"\r\n"+"----------------------------------------");
-    			List<GpmMember> gpmList = funBDO.viewGPMList();
+    			List<GPMbean> gpmList = funBDO.viewGPMList();
     			
-    			for (GpmMember gpMbean : gpmList) {
+    			for (GPMbean gpMbean : gpmList) {
     				System.out.println(gpMbean);
     			}
     	    break;
@@ -229,7 +211,7 @@ public static Scanner sc = new Scanner(System.in);
     }
     
     
-    public static GpmFunctions funGpm  = new GpmFunctions();
+    public static functionsOfGPM funGpm  = new functionsOfGPM();
     
 //GPM portal
     public static void gpmPortal() {
@@ -289,31 +271,31 @@ public static Scanner sc = new Scanner(System.in);
     			System.out.println("Enter the name of employee");
     			String name = sc.next();
     			
-    	Employee emp1 = new Employee(name, name, out, 0, 0, name, name);
-    	
+    			EMPLOYEEbean emp1 = new EMPLOYEEbean(null, name, null, 0, 0, curGPM, null);
     			funGpm.createEmployee(emp1);
     			
     	    break;
     	  case "2":
-    		//get all emplyess list 
+    		//View the list of employee
     			System.out.println("\r\n"+"Employees List"+"\r\n"+"---------------------------");
-    			List<Employee> empList =GpmFunctions.viewEmployeeList();
+    			List<EMPLOYEEbean> empList =funGpm.viewEmployeeList();
     			System.out.println("The List of The Eployees");
     			
-    			for (Employee employeEbean : empList) {
+    			for (EMPLOYEEbean employeEbean : empList) {
     				System.out.println(employeEbean);
     			}
     			
     	    break;
     	  case "3":
-    		
+    		//Assign project to employee;	
+//    			list of project available
     		  System.out.println("\r\n");
-    			GpmFunctions.aviaProjAndEmp(curGPM);
+    			funGpm.aviaProjAndEmp(curGPM);
     	    break;
     	  case "4":
     		//Viewing the employee list and days of works
     		  System.out.println("\r\n"+"The List Of Gram Panchyat Mebers"+"/r/n"+"-----------------------------------");
-    			GpmFunctions.showproOption();
+    			funGpm.showproOption();
     	    break;
     	  case "99":
 //      		going to main portal
@@ -323,13 +305,11 @@ public static Scanner sc = new Scanner(System.in);
     		  curBDO=null;
       	    break;  
     	  case "0":
-//    	
+//    		Closig the app
     	   rev = false;
        	   System.out.println("Exited..");
        	   sc.close();
-//       	   functionsOfGPM.sc.close();
-//       	   gpmFunction.sc.close;
-       	   
+       	   functionsOfGPM.sc.close();
     	    break;  
     	  default:
     		  System.out.println("!!!Invalid selection!!!");
@@ -343,7 +323,5 @@ public static Scanner sc = new Scanner(System.in);
     	
     }
     
-	
-	
-	
 }
+
