@@ -1,7 +1,8 @@
 package Test;
 
 import java.sql.*;
-import com.masai.util.*;
+
+import com.Utility.*;
 
 public class demo {
 
