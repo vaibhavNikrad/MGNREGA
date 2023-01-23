@@ -1,7 +1,7 @@
 
 package com.Control;
 
-//This will provide all the dashboard services to navigate the db managemenet
+//This will provide all the main services to navigate the db main
 
 import java.util.*;
 
@@ -135,7 +135,7 @@ public class ComtrolMain {
 				+"|  4. View Gram Panchayat Member                 |"+"\n"
 				+"|  5. View the project                           |"+"\n"
 				+"|  6. Allocate Project To GPM                    |"+"\n"
-				+"|  99. See The Employee Working, wage On Project |"+"\n"
+				+"|  7. See The Employee Working, wage On Project |"+"\n"
 				+"|  0. Exit The Application                       |"+"\n"
 				+"|                                                |"+"\n"
 				+"+================================================+"+"\n"
