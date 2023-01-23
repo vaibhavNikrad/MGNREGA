@@ -1,0 +1,143 @@
+#Common for creating prefiexed id
+
+CREATE TABLE table1_seq(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY);
+
+
+#Block Development Officer table.
+
+CREATE TABLE bdoDB (bdoID VARCHAR(7) NOT NULL PRIMARY KEY DEFAULT '0',
+             bdoName varchar(20),
+             bdoUsername varchar(20),
+             bdoPassword varchar(8),
+             UNIQUE (bdoUsername, bdoPassword));
+
+#terigger to set prefix to autoincrementing bdoId
+
+DELIMITER $$
+CREATE TRIGGER tg_bdoDB_insert
+BEFORE INSERT ON bdoDB
+FOR EACH ROW
+BEGIN
+  INSERT INTO table1_seq VALUES (NULL);
+  SET NEW.bdoID = CONCAT('BDO', LPAD(LAST_INSERT_ID(), 3, '0'));
+END$$
+
+
+
+#Project details table.
+
+CREATE TABLE projectDB (proID VARCHAR(7) NOT NULL PRIMARY KEY DEFAULT '0',
+                        proName VARCHAR(20),
+                        totalCost int,
+                        balanceCost int,
+                        wagePerEmp int,
+                        employeeRequired int,
+                        dateOfStart date,
+                        dateOfEnd date,
+                        status ENUM('not_start', 'WIP', 'done') DEFAULT 'not_start',
+                        bdoSupervise VARCHAR(7),
+                        FOREIGN KEY (bdoSupervise) REFERENCES bdoDB(bdoID));
+
+
+#terigger to set prefix to autoincrementing proID
+
+DELIMITER $$
+CREATE TRIGGER tg_projectDB_insert
+BEFORE INSERT ON projectDB
+FOR EACH ROW
+BEGIN
+  INSERT INTO table1_seq VALUES (NULL);
+  SET NEW.proID = CONCAT('PRO', LPAD(LAST_INSERT_ID(), 3, '0'));
+END$$
+
+
+
+#Gram Panchayat Member 
+
+CREATE TABLE gpmDB(gpmID VARCHAR(7) NOT NULL PRIMARY KEY DEFAULT '0',
+                   gpmName VARCHAR(20),
+                   gpmUsername VARCHAR(20),
+                   gpmPassword VARCHAR(8), 
+                   bdoSupervise VARCHAR(7),
+                   proAllot VARCHAR(7),
+                   FOREIGN KEY (bdoSupervise) REFERENCES bdoDB(bdoID),
+                   FOREIGN KEY (proAllot) REFERENCES projectDB(proID),
+                   UNIQUE (gpmUsername, gpmPassword));
+
+#terigger to set prefix to autoincrementing gpmId
+
+DELIMITER $$
+CREATE TRIGGER tg_gpmDB_insert
+BEFORE INSERT ON gpmDB
+FOR EACH ROW
+BEGIN
+  INSERT INTO table1_seq VALUES (NULL);
+  SET NEW.gpmID = CONCAT('GPM', LPAD(LAST_INSERT_ID(), 3, '0'));
+END$$
+
+#Table of employee
+
+CREATE TABLE employeeDB(empID VARCHAR(7) NOT NULL PRIMARY KEY DEFAULT '0',
+                        empName VARCHAR(20),
+                        status ENUM('unemployeed', 'employeed') DEFAULT 'unemployeed',
+                        wageEarned int,
+                        numOfDaysWork int,
+                        gpmSuervise VARCHAR(7),
+                        proWorking VARCHAR(7),
+                        FOREIGN KEY (gpmSuervise) REFERENCES gpmDB(gpmID),
+                        FOREIGN KEY (proWorking) REFERENCES projectDB(proID));
+
+#terigger to set prefix to autoincrementing empId
+
+DELIMITER $$
+CREATE TRIGGER tg_employeeDB_insert
+BEFORE INSERT ON employeeDB
+FOR EACH ROW
+BEGIN
+  INSERT INTO table1_seq VALUES (NULL);
+  SET NEW.empID = CONCAT('EMP', LPAD(LAST_INSERT_ID(), 3, '0'));
+END$$
+
+
+--------------------------------------------------------
+
+insert in into bdodatase table;
+
+INSERT INTO bdoDB(bdoName, bdoUsername, bdoPassword) VALUES(?, ?, ?);
+
+login into bdo account
+
+SELECT * FROM bdoDB WHERE bdoUsername=? AND bdoPassword=?;
+
+Creating the project
+
+INSERT INTO projectDB(proName, totalCost, balanceCost, WagePerEmp, employeeRequired, dateOfStart, dateOfEnd)
+VALUES(?, ?, ?, ?, ?, ?, ?)
+
+inserting into gpmdb table
+
+INSERT INTO gpmDB(gpmName, gpmUsername, gpmPassword) VALUES(?, ?, ?)
+
+UPDATE gpmDB SET proAllot='PRO003'WHERE gpmID='GPM004';
+
+Updating the project when new employee is added.
+
+UPDATE projectDB SET balanceCost=(balanceCost-wagePerEmp), employeeRequired=employeeRequired-1 WHERE proID='PRO002';
+
+
+SELECT projectDB.proID, projectDB.proName FROM projectDB CROSS JOIN gpmDB WHERE projectDB.proID=gpmDB.proAllot AND projectDB.balanceCost>0 AND projectDB.employeeRequired>0 AND NOT projectDB.status='done' AND gpmDB.gpmID=
+
+
+SELECT proID, proName FROM projectDB WHERE NOT proID = ANY (SELECT proAllot FROM gpmDB WHERE proAllot IS NOT NULL) AND balanceCost>0 AND employeeRequired>0 AND NOT status='done';                              
+
+
+
+
+
+
+
+
+
+
+
+
