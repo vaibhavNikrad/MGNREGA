@@ -1,5 +1,5 @@
-# secret-lip-9762
- MGNREGA
+
+# MGNREGA
 
                                   Domain Description:
 MNREGA(The Mahatma Gandhi National Rural Employment Guarantee Act ) is a scheme by which
