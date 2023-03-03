@@ -11,7 +11,8 @@ public class functionsOfGPM {
 	
 	public static Scanner sc = new Scanner(System.in);
 
-//Login into gram pamchayat member
+//Login into gram panchayat member
+	
 	public static boolean loginGPM(String user, String pass) {
 		
 		boolean flag = false;
@@ -29,7 +30,7 @@ public class functionsOfGPM {
 				System.out.println("\n"+"Welcome Gram Panchayat Member "+gpm.getString("gpmName"));
 				System.out.println("Your ID is "+gpm.getString("gpmID"));
 //login current account				
-				com.Control.ComtrolMain.curGPM = gpm.getString("gpmID");
+				com.Control.ControlMain.curGPM = gpm.getString("gpmID");
 				flag = true;
 			}else {
 				System.out.println("Invalide Username OR Password");
@@ -113,8 +114,7 @@ public class functionsOfGPM {
 	}
 	
 	
-//Allotnig the project to employee, the project is not finished, employee required and have balance budget. Also selecting the employee 
-//which is unemployeed now. Updating the employee also. Giving them wage and num of days work.
+
 	public static void aviaProjAndEmp(String gpmID) {
 		try(Connection conn = DButil.getConnection()) {
 			

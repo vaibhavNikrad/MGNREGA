@@ -1,7 +1,5 @@
 package com.Model;
 
-import java.sql.Date;
-
 public class PROJECTbean {
 
 	String proID;
