@@ -233,11 +233,8 @@ public class functionsOfGPM {
 		}
 	}
 	
-	
-//viewing list of employee and and nuber of days worked
-	//list of employee working on project and their salary	
-//	options of project
-	public static void showproOption() {
+
+	public static void showProOption() {
 		
 try(Connection conn = DButil.getConnection()) {
 			
@@ -260,7 +257,7 @@ try(Connection conn = DButil.getConnection()) {
 			}else {
 				System.out.println("\n"+"Enter the Project Id");
 				String proCurr = sc.next();
-				listOfempProSal(proCurr);
+				listOfEmpProSal(proCurr);
 			}
 			
 		} catch (SQLException e) {
@@ -271,7 +268,7 @@ try(Connection conn = DButil.getConnection()) {
 	}
 	
 	
-	public static void listOfempProSal(String proCurr) {
+	public static void listOfEmpProSal(String proCurr) {
 		try(Connection conn = DButil.getConnection()) {
 			
 			PreparedStatement proAc =

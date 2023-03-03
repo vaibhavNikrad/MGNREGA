@@ -1,7 +1,6 @@
 
 package com.Control;
 
-
 import java.util.*;
 
 import com.BDOusecase.*;
@@ -29,8 +28,8 @@ public class ControlMain {
 				+ "|          Welcome to MGNREGA portal          |" + "\n"
 				+ "+============================================+" + "\n"
 				+ "|                                            |" + "\n"
-				+ "|  1. to acess as BLOCK DEVELOPMENT OFFICER  |" + "\n"
-				+ "|  2. to acess as GRAM PANCAYAT MEMBER       |" + "\n"
+				+ "|  1. To acess as BLOCK DEVELOPMENT OFFICER  |" + "\n"
+				+ "|  2. To acess as GRAM PANCAYAT MEMBER       |" + "\n"
 				+ "|  3. Exit the application                   |" + "\n"
 				+ "|                                            |" + "\n"
 				+ "+============================================+" + "\n" + ConsoleColors.RESET);
@@ -38,7 +37,7 @@ public class ControlMain {
 		String out = sc.next();
 
 		if (out.equals("1")) {
-			bdoPotal();
+			bdoPortal();
 		} else if (out.equals("2")) {
 			gpmPortal();
 		} else if (out.equals("0")) {
@@ -53,7 +52,7 @@ public class ControlMain {
 	}
 
 //bdo portal    
-	public static void bdoPotal() {
+	public static void bdoPortal() {
 
 		System.out.print(ConsoleColors.GREEN_BOLD + "+=======================================================+" + "\n"
 				+ "|    Welcome TO BLOCK DEVELOPMENT OFFICERS Portal     |" + "\n"
@@ -64,11 +63,7 @@ public class ControlMain {
 				+ "|  9. Enter 9 to Go To Main Portal                    |" + "\n"
 				+ "|  0. Enter 0 to Exit The Application                 |" + "\n"
 				+ "+=====================================================+" + "\n" + ConsoleColors.RESET);
-//
-//		System.out.println("\r\n" + "***Welcome TO BLOCK DEVELOPMENT OFFICERS Portal***\r\n" + "\r\n"
-//				+ "Type 1 To Login\r\n" + "Type 2 To Create BDO account\r\n" + "Type 99 To Go to Main Portal\r\n"
-//				+ "Type 0 To Exit The Application");
-//		
+
 		String out = sc.next();
 
 		if (out.equals("1")) {
@@ -80,10 +75,10 @@ public class ControlMain {
 			String pass = sc.next();
 
 			if (funBDO.loginBDO(user, pass)) {
-//    		      Accesing the functionality of BDO
+    		     
 				bdofunctiond();
 			} else {
-				bdoPotal();
+				bdoPortal();
 			}
 
 		} else if (out.equals("2")) {
@@ -101,7 +96,7 @@ public class ControlMain {
 
 			funBDO.insertBDO(bdo1);
 // 			redirect to bdo portal
-			bdoPotal();
+			bdoPortal();
 
 		} else if (out.equals("0")) {
 			sc.close();
@@ -111,7 +106,7 @@ public class ControlMain {
 			mnPortal();
 		} else {
 			System.out.println(ConsoleColors.RED_BACKGROUND + "!!!Invalid selection!!!" + ConsoleColors.RESET);
-			bdoPotal();
+			bdoPortal();
 		}
 
 	}
@@ -196,7 +191,7 @@ public class ControlMain {
 		case "5":
 			// Allocating project
 
-			funBDO.projAandGpm(curBDO);
+			funBDO.projAndGpm(curBDO);
 			break;
 		case "6":
 			// Viewing employe and working employee on that project
@@ -205,25 +200,25 @@ public class ControlMain {
 			funBDO.showProOption();
 			break;
 		case "99":
-              //   Going to main method
+			// Going to main method
 			rev = false;
 			mnPortal();
 			curGPM = null;
 			curBDO = null;
 			break;
 		case "0":
-            // closing app
+			// closing app
 			rev = false;
 			sc.close();
 			funBDO.sc.close();
-			System.out.println("Exited...");
+			System.out.println(ConsoleColors.RED + "Exited...");
 			break;
 		default:
 			System.out.println("!!!Invalid selection!!!");
 			bdofunctiond();
 		}
 
-            //Return to main function again
+		// Return to main function again
 		if (rev) {
 			bdofunctiond();
 		}
@@ -298,8 +293,7 @@ public class ControlMain {
 
 			break;
 		case "3":
-			// Assign project to employee;
-//    			list of project available
+
 			System.out.println("\r\n");
 			funGpm.aviaProjAndEmp(curGPM);
 			break;
@@ -307,7 +301,7 @@ public class ControlMain {
 			// Viewing the employee list and days of works
 			System.out.println(
 					"\r\n" + "The List Of Gram Panchyat Mebers" + "/r/n" + "-----------------------------------");
-			funGpm.showproOption();
+			funGpm.showProOption();
 			break;
 		case "99":
 //      		going to main portal
@@ -318,8 +312,6 @@ public class ControlMain {
 			break;
 		case "0":
 
-			
-			
 			rev = false;
 			System.out.println("Exited..");
 			sc.close();

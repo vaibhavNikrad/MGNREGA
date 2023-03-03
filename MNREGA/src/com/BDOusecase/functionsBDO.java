@@ -229,7 +229,7 @@ public class functionsBDO {
 	}
 
 //Alloting the project. It will display project ID and name ti choose from.
-	public static void projAandGpm(String curBDO) {
+	public static void projAndGpm(String curBDO) {
 
 //		Displaying the project available and not finshed
 		try (Connection conn = DButil.getConnection()) {
