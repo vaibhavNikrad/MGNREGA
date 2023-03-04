@@ -56,6 +56,22 @@ END$$
 
 CREATE TABLE gpmDB(gpmID  Primary key AUTO_INCREMENT,gpmName VARCHAR(20),gpmUsername VARCHAR(20),gpmPassword VARCHAR(8), bdoSupervise VARCHAR(7),proAllot int,FOREIGN KEY (bdoSupervise) REFERENCES bdoDB(bdoID),FOREIGN KEY (proAllot) REFERENCES projectDB(proID),UNIQUE (gpmUsername, gpmPassword));
 
+
+
+
+--------------------------------------------------------
+CREATE TABLE gpmDB(
+    gpmID INT PRIMARY KEY AUTO_INCREMENT,
+    gpmName VARCHAR(20),
+    gpmUsername VARCHAR(20),
+    gpmPassword VARCHAR(8),
+    bdoSupervise VARCHAR(7),
+    proAllot INT,
+    FOREIGN KEY (bdoSupervise) REFERENCES bdoDB(bdoID),
+    FOREIGN KEY (proAllot) REFERENCES projectDB(proID),
+    UNIQUE (gpmUsername, gpmPassword)
+);
+---------------------------------------------------------------------
 #terigger to set prefix to autoincrementing gpmId
 
 DELIMITER $$
@@ -70,14 +86,34 @@ END$$
 #Table of employee
 
 CREATE TABLE employeeDB(empID VARCHAR(7) NOT NULL PRIMARY KEY DEFAULT '0',
-                        empName VARCHAR(20),
-                        status ENUM('unemployeed', 'employeed') DEFAULT 'unemployeed',
-                        wageEarned int,
-                        numOfDaysWork int,
-                        gpmSuervise VARCHAR(7),
-                        proWorking VARCHAR(7),
-                        FOREIGN KEY (gpmSuervise) REFERENCES gpmDB(gpmID),
-                        FOREIGN KEY (proWorking) REFERENCES projectDB(proID));
+empName VARCHAR(20),
+wageEarned int,
+numOfDaysWork int,
+gpmSuervise VARCHAR(7),
+proWorking VARCHAR(7),
+FOREIGN KEY (gpmSuervise) REFERENCES gpmDB(gpmID),
+FOREIGN KEY (proWorking) REFERENCES projectDB(proID));
+--------------------------------------------------------------------
+CREATE TABLE employeeDB(
+  empID VARCHAR(7) NOT NULL PRIMARY KEY DEFAULT '0',
+  empName VARCHAR(20),
+  wageEarned int,
+  numOfDaysWork int,
+  gpmSuervise VARCHAR(7),
+  proWorking VARCHAR(7),
+  FOREIGN KEY (gpmSuervise) REFERENCES gpmDB(gpmID),
+  FOREIGN KEY (proWorking) REFERENCES projectDB(proID)
+);
+
+
+
+
+
+
+
+
+
+
 
 #terigger to set prefix to autoincrementing empId
 
