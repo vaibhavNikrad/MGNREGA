@@ -16,73 +16,47 @@ public class functionsBDO {
 
 	public static Scanner sc = new Scanner(System.in);
 
-//inserting the bdo account
-	
-//	public void insertBDO(BDO bdo1) {
-//		int out = 0;
-//		try (Connection conn = DButil.getConnection()) {
-//
-//			PreparedStatement inBDO =
-//					conn
-//					.prepareStatement("INSERT INTO bdoDB(bdoName, bdoUsername, bdoPassword) VALUES(?, ?, ?)");
-//
-//			inBDO.setString(1, bdo1.getName());
-//			inBDO.setString(2, bdo1.getUsername());
-//	
-//			inBDO.setString(3, bdo1.getPassword());
-//
-//			out = inBDO.executeUpdate();
-//
-//			if (out > 0)
-//				System.out.println("NEW Block Development Officer Account Crated");
-//
-//		} catch (SQLException e) {
-//			
-//			System.out.println(e.getMessage());
-//		}
-//
-//	}
-
 	public void insertBDO(BDO bdo1) {
-	    int out = 0;
-	    try (Connection conn = DButil.getConnection()) {
-	        // Prepare the SQL statement with placeholders for the inputs
-	        PreparedStatement inBDO =
-	            conn.prepareStatement("INSERT INTO bdoDB(bdoName, bdoUsername, bdoPassword) VALUES(?, ?, ?)");
+		int out = 0;
+		try (Connection conn = DButil.getConnection()) {
+			// Prepare the SQL statement with placeholders for the inputs
+			PreparedStatement inBDO = conn
+					.prepareStatement("INSERT INTO bdoDB(bdoName, bdoUsername, bdoPassword) VALUES(?, ?, ?)");
 
-	        // Set the values for the placeholders
-	        inBDO.setString(1, bdo1.getName());
+			// Set the values for the placeholders
+			inBDO.setString(1, bdo1.getName());
 
-	        // Check if the username and password are valid
-	        if (isValidUsername(bdo1.getUsername()) && isValidPassword(bdo1.getPassword())) {
-	            inBDO.setString(2, bdo1.getUsername());
-	            inBDO.setString(3, bdo1.getPassword());
-	        } else {
-	            throw new IllegalArgumentException("Invalid username or password");
-	        }
+			// Check if the username and password are valid
+			if (isValidUsername(bdo1.getUsername()) && isValidPassword(bdo1.getPassword())) {
+				inBDO.setString(2, bdo1.getUsername());
+				inBDO.setString(3, bdo1.getPassword());
+			} else {
+				throw new IllegalArgumentException("Invalid username or password");
+			}
 
-	        // Execute the SQL statement
-	        out = inBDO.executeUpdate();
+			// Execute the SQL statement
+			out = inBDO.executeUpdate();
 
-	        if (out > 0)
-	            System.out.println("NEW Block Development Officer Account Crated");
+			if (out > 0)
+				System.out.println("NEW Block Development Officer Account Crated");
 
-	    } catch (SQLException e) {
-	        System.out.println(e.getMessage());
-	    }
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	// Helper methods for validation
 	private boolean isValidUsername(String username) {
-	    // Check if the username is at least 4 characters long
-	    return username.length() >= 4;
+		// Check if the username is at least 4 characters long
+		return username.length() >= 4;
 	}
 
 	private boolean isValidPassword(String password) {
-	    // Check if the password is at least 8 characters long and contains at least one uppercase letter, one lowercase letter, and one number
-	    return password.length() >= 8 && password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$");
+		// Check if the password is at least 8 characters long and contains at least one
+		// uppercase letter, one lowercase letter, and one number
+		return password.length() >= 8 && password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$");
 	}
-	
+
 //Login into the bdo account
 	public static boolean loginBDO(String user, String pass) {
 
@@ -173,11 +147,10 @@ public class functionsBDO {
 				int empReq = proj.getInt("employeeRequired");
 				String dos = proj.getString("dateOfStart");
 				String doe = proj.getString("dateOfEnd");
-				
+
 				String bdosup = proj.getString("bdoSupervise");
 
 				Project pro = new Project(countOfPro, name, cost, cost, wag, empReq, dos, doe, bdosup);
-				
 
 				proList.add(pro);
 
@@ -200,74 +173,105 @@ public class functionsBDO {
 		return proList;
 	}
 
-	
-	
-	public void deleteProject(int  pid) throws ProjectException {
-		
-		
+	public void deleteProject(int pid) throws ProjectException {
+
 		try (Connection conn = DButil.getConnection()) {
-			
+
 			PreparedStatement ps = conn.prepareStatement("Delete from projectdb where proid=?");
-			
+
 			ps.setInt(1, pid);
-			
+
 			int res = ps.executeUpdate();
-			
-			if(res>0) {
-			
-			System.out.println("Project Removed Successfully.....!!!!!");
-			
+
+			if (res > 0) {
+
+				System.out.println("Project Removed Successfully.....!!!!!");
+
 			}
-			
-			
+
 		} catch (Exception e) {
-			
-			
-			
+
 			System.out.println(e.getMessage());
 		}
-			
-			
-			
-		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
-//Creating gram  panchayat member
-	public static void insertGPM(GpmMember gpm1) {
 
-		try (Connection conn = DButil.getConnection()) {
-
-			PreparedStatement inGPM = conn.prepareStatement(
-					"INSERT INTO gpmDB(gpmName, gpmUsername, gpmPassword, bdoSupervise) VALUES(?, ?, ?, ?)");
-
-			inGPM.setString(1, gpm1.getGpmName());
-			inGPM.setString(2, gpm1.getGpmUsername());
-			inGPM.setString(3, gpm1.getGpmPassword());
-			inGPM.setString(4, gpm1.getBdoSupervise());
-
-			int out = inGPM.executeUpdate();
-
-			if (out > 0)
-				System.out.println("\n" + "New Gram Panchayat Member Account Added");
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-//			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
 	}
 
+	public static void insertGPM(GpmMember gpm1) {
+
+	    try (Connection conn = DButil.getConnection()) {
+	        
+	        // Validate username
+	        if(!isValidUsername(gpm1.getGpmUsername(), conn)) {
+	            System.out.println("Username is invalid or already exists.");
+	            return;
+	        }
+	        
+	        // Validate password
+	        if(!isValidPassword(gpm1.getGpmPassword(), gpm1.getGpmUsername())) {
+	            System.out.println("Password is invalid.");
+	            return;
+	        }
+
+	        PreparedStatement inGPM = conn.prepareStatement(
+	                "INSERT INTO gpmDB(gpmName, gpmUsername, gpmPassword, bdoSupervise) VALUES(?, ?, ?, ?)");
+
+	        inGPM.setString(1, gpm1.getGpmName());
+	        inGPM.setString(2, gpm1.getGpmUsername());
+	        inGPM.setString(3, gpm1.getGpmPassword());
+	        inGPM.setString(4, gpm1.getBdoSupervise());
+
+	        int out = inGPM.executeUpdate();
+
+	        if (out > 0)
+	            System.out.println("\n" + "New Gram Panchayat Member Account Added");
+
+	    } catch (SQLException e) {
+	        System.out.println(e.getMessage());
+	    }
+	}
+
+	private static boolean isValidUsername(String username, Connection conn) throws SQLException {
+	    if(username == null || username.isEmpty()) {
+	        return false;
+	    }
+	    
+	    // Check if the username already exists in the database
+	    PreparedStatement checkUsername = conn.prepareStatement("SELECT COUNT(*) FROM gpmDB WHERE gpmUsername = ?");
+	    checkUsername.setString(1, username);
+	    ResultSet rs = checkUsername.executeQuery();
+	    rs.next();
+	    int count = rs.getInt(1);
+	    if(count > 0) {
+	        return false;
+	    }
+	    
+	    // Check if the username contains only valid characters
+	    String pattern = "^[a-zA-Z0-9_]*$";
+	    return username.matches(pattern);
+	}
+
+	private static boolean isValidPassword(String password, String username) {
+	    if(password == null || password.isEmpty()) {
+	        return false;
+	    }
+	    
+	    // Check if the password contains a mix of alphabets, numbers, and special characters
+	    String pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,20}$";
+	    if(!password.matches(pattern)) {
+	        return false;
+	    }
+	    
+	    // Check if the password is a common password or contains the username as a substring
+	    if(password.equals("password") || password.equals("123456") || password.toLowerCase().contains(username.toLowerCase())) {
+	        return false;
+	    }
+	    
+	    return true;
+	}
+
+
 //Viewing the gram panchayat member list
-	
-	
+
 	public static List<GpmMember> viewGPMList() {
 
 		List<GpmMember> gpmList = new ArrayList<GpmMember>();
@@ -317,7 +321,6 @@ public class functionsBDO {
 
 //Alloting the project. It will display project ID and name ti choose from.
 	public static void projAndGpm(String curBDO) {
-
 
 		try (Connection conn = DButil.getConnection()) {
 
