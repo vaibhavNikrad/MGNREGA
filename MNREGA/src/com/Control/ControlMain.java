@@ -5,6 +5,7 @@ import java.util.*;
 
 import com.BDOusecase.*;
 import com.ConsoleColor.ConsoleColors;
+import com.Exception.ProjectException;
 import com.GPMusecase.*;
 import com.Model.*;
 
@@ -43,7 +44,7 @@ public class ControlMain {
 		} else if (out.equals("0")) {
 			sc.close();
 			funBDO.sc.close();
-			System.out.println(ConsoleColors.RED_BOLD + "Exited..." + ConsoleColors.RESET);
+			System.out.println(ConsoleColors.RED_BACKGROUND + "Exited..." + ConsoleColors.RESET);
 		} else {
 			System.out.println(ConsoleColors.RED_BACKGROUND + "!!!Invalid selection!!!" + ConsoleColors.RESET);
 			mnPortal();
@@ -92,7 +93,7 @@ public class ControlMain {
 			System.out.println("Enter BDO password");
 			String pass = sc.next();
 
-			BDObean bdo1 = new BDObean(null, nam, user, pass);
+			BDO bdo1 = new BDO(null, nam, user, pass);
 
 			funBDO.insertBDO(bdo1);
 // 			redirect to bdo portal
@@ -125,8 +126,9 @@ public class ControlMain {
 				+ "|  4. View Gram Panchayat Member                 |" + "\n"
 				+ "|  5. View the project                           |" + "\n"
 				+ "|  6. Allocate Project To GPM                    |" + "\n"
-				+ "|  7. See The Employee Working, wage On Project |" + "\n"
-				+ "|  0. Exit The Application                       |" + "\n"
+				+ "|  7. See The Employee Working, wage On Project  |" + "\n"
+				+ "|  8. Delete particular project                  |" +"\n"
+				+ "   0.  Enter 0 to ext                            |" + "\n"
 				+ "|                                                |" + "\n"
 				+ "+================================================+" + "\n" + ConsoleColors.RESET);
 		String out = sc.next();
@@ -140,7 +142,7 @@ public class ControlMain {
 			String nam = sc.next();
 			System.out.println("Enter Project total cost");
 			int cost = sc.nextInt();
-			System.out.println("Enter Project Wage Per Empployee");
+			System.out.println("Enter Project Wage Per Employee");
 			int wage = sc.nextInt();
 			System.out.println("Enter Project No of Empployee Required");
 			int empReq = sc.nextInt();
@@ -149,16 +151,17 @@ public class ControlMain {
 			System.out.println("Enter Project Date Of End in YYYY-MM-DD");
 			String doe = sc.next();
 
-			PROJECTbean pro = new PROJECTbean(null, nam, cost, cost, wage, empReq, dos, doe, null, curBDO);
-			funBDO.createProject(pro);
+	       Project pr  = new Project(empReq, nam, cost, cost, wage, empReq, nam, doe, dos);
+	
+			funBDO.createProject(pr);
 			break;
 		case "2":
 			// Viewing project list
 			System.out.println("\r\n" + "The Project List" + "\r\n" + "--------------------------------------------");
-			List<PROJECTbean> poj = funBDO.viewProjectList(curBDO);
+			List<Project> poj = funBDO.viewProjectList(curBDO);
 
-			for (PROJECTbean projecTbean : poj) {
-				System.out.println(projecTbean);
+			for (Project project : poj) {
+				System.out.println(project);
 			}
 
 			break;
@@ -173,7 +176,7 @@ public class ControlMain {
 			System.out.println("Enter Password");
 			String pass = sc.next();
 
-			GPMbean gpm1 = new GPMbean(null, name, user, pass, curBDO, null);
+			GpmMember gpm1 = new GpmMember(null, name, user, pass, curBDO, null);
 			funBDO.insertGPM(gpm1);
 
 			break;
@@ -182,19 +185,20 @@ public class ControlMain {
 
 			System.out.println(
 					"\r\n" + "The Gram Panchayat Member List" + "\r\n" + "----------------------------------------");
-			List<GPMbean> gpmList = funBDO.viewGPMList();
+			List<GpmMember> gpmList = funBDO.viewGPMList();
 
-			for (GPMbean gpMbean : gpmList) {
+			for (GpmMember gpMbean : gpmList) {
 				System.out.println(gpMbean);
 			}
 			break;
 		case "5":
+			
 			// Allocating project
 
 			funBDO.projAndGpm(curBDO);
 			break;
 		case "6":
-			// Viewing employe and working employee on that project
+			// Viewing employee and working employee on that project
 
 			System.out.println("\r\n");
 			funBDO.showProOption();
@@ -206,8 +210,22 @@ public class ControlMain {
 			curGPM = null;
 			curBDO = null;
 			break;
+			
+			
+		case"8":
+			
+			System.out.println("Enter ProjectID  to Delete Perticular project");
+			try {
+				funBDO.deleteProject(sc.nextInt());
+			} catch (ProjectException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+			
 		case "0":
 			// closing app
+			
 			rev = false;
 			sc.close();
 			funBDO.sc.close();
@@ -236,6 +254,7 @@ public class ControlMain {
 		String out = sc.next();
 
 		if (out.equals("1")) {
+			
 			// Login into Gram Panchyat Member account
 			System.out.println("\r\n" + "Login into the Gram Panchyat Member portal");
 			System.out.println("Enter Username");
@@ -277,17 +296,17 @@ public class ControlMain {
 			System.out.println("Enter the name of employee");
 			String name = sc.next();
 
-			EMPLOYEEbean emp1 = new EMPLOYEEbean(null, name, null, 0, 0, curGPM, null);
+			Employee emp1 = new Employee(null, name, null, 0, 0, curGPM, null);
 			funGpm.createEmployee(emp1);
 
 			break;
 		case "2":
 			// View the list of employee
 			System.out.println("\r\n" + "Employees List" + "\r\n" + "---------------------------");
-			List<EMPLOYEEbean> empList = funGpm.viewEmployeeList();
+			List<Employee> empList = funGpm.viewEmployeeList();
 			System.out.println("The List of The Eployees");
 
-			for (EMPLOYEEbean employeEbean : empList) {
+			for (Employee employeEbean : empList) {
 				System.out.println(employeEbean);
 			}
 

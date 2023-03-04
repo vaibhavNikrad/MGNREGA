@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.Model.EMPLOYEEbean;
+import com.Model.Employee;
 import com.Utility.*;
 
 public class functionsOfGPM {
@@ -46,7 +46,7 @@ public class functionsOfGPM {
 	}
 	
 //Create Employee
-	public static void createEmployee(EMPLOYEEbean emp1) {
+	public static void createEmployee(Employee emp1) {
 		
 		try(Connection conn = DButil.getConnection()) {
 			
@@ -69,9 +69,9 @@ public class functionsOfGPM {
 	
 	
 //View THe list of the employee
-	public static List<EMPLOYEEbean> viewEmployeeList() {
+	public static List<Employee> viewEmployeeList() {
 		
-		List<EMPLOYEEbean> employeeList = new ArrayList<EMPLOYEEbean>();
+		List<Employee> employeeList = new ArrayList<Employee>();
 		
 		try(Connection conn = DButil.getConnection()) {
 			
@@ -94,7 +94,7 @@ public class functionsOfGPM {
 				String gpm = empList.getString("gpmSuervise");
 				String proj = empList.getString("proWorking");
                 
-				EMPLOYEEbean emp = new EMPLOYEEbean(empID, empName, status, wage, day, gpmSup, proj);
+				Employee emp = new Employee(empID, empName, status, wage, day, gpmSup, proj);
 				employeeList.add(emp);
 				
 				flagEmp=false;

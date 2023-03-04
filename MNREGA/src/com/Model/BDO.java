@@ -1,13 +1,13 @@
 package com.Model;
 
-public class BDObean {
+public class BDO {
 
 	String bdoID;
 	String name;
 	String username;
 	String password;
 	
-	public BDObean(String bdoID, String name, String username, String password) {
+	public BDO(String bdoID, String name, String username, String password) {
 		super();
 		this.bdoID = bdoID;
 		this.name = name;

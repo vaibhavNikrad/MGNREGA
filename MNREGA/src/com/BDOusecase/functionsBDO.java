@@ -7,15 +7,18 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.Control.*;
+import com.Exception.ProjectException;
 import com.Model.*;
 import com.Utility.*;
+import java.util.regex.*;
 
 public class functionsBDO {
 
 	public static Scanner sc = new Scanner(System.in);
 
 //inserting the bdo account
-	public static void insertBDO(BDObean bdo1) {
+	
+	public void insertBDO(BDO bdo1) {
 		int out = 0;
 		try (Connection conn = DButil.getConnection()) {
 
@@ -25,6 +28,7 @@ public class functionsBDO {
 
 			inBDO.setString(1, bdo1.getName());
 			inBDO.setString(2, bdo1.getUsername());
+	
 			inBDO.setString(3, bdo1.getPassword());
 
 			out = inBDO.executeUpdate();
@@ -74,23 +78,23 @@ public class functionsBDO {
 	}
 
 //Creating the projects	
-	public static void createProject(PROJECTbean pro1) {
+	public static void createProject(Project pro1) {
 
 		try (Connection conn = DButil.getConnection()) {
 
-			String qur = "INSERT INTO projectDB(proName, totalCost, balanceCost, WagePerEmp, employeeRequired, dateOfStart, dateOfEnd, bdoSupervise) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+			String query = "INSERT INTO projectDB(proName, totalCost, balanceCost, WagePerEmp, employeeRequired, dateOfStart, dateOfEnd, bdoSupervise) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
-			PreparedStatement crtPro = conn.prepareStatement(qur);
-			crtPro.setString(1, pro1.getProName());
-			crtPro.setInt(2, pro1.getTotalCost());
-			crtPro.setInt(3, pro1.getTotalCost());
-			crtPro.setInt(4, pro1.getWagePerEmp());
-			crtPro.setInt(5, pro1.getEmployeeRequired());
-			crtPro.setString(6, pro1.getDateOfStrat());
-			crtPro.setString(7, pro1.getDateOfEnd());
-			crtPro.setString(8, pro1.getBdoSupervise());
+			PreparedStatement pds = conn.prepareStatement(query);
+			pds.setString(1, pro1.getProName());
+			pds.setInt(2, pro1.getTotalCost());
+			pds.setInt(3, pro1.getTotalCost());
+			pds.setInt(4, pro1.getWagePerEmp());
+			pds.setInt(5, pro1.getEmployeeRequired());
+			pds.setString(6, pro1.getDateOfStrat());
+			pds.setString(7, pro1.getDateOfEnd());
+			pds.setString(8, pro1.getBdoSupervise());
 
-			int out = crtPro.executeUpdate();
+			int out = pds.executeUpdate();
 
 			if (out > 0) {
 				System.out.println(pro1.getProName() + " Project Created");
@@ -106,9 +110,9 @@ public class functionsBDO {
 	}
 
 //View the list of the project
-	public static List<PROJECTbean> viewProjectList(String curBDO) {
+	public static List<Project> viewProjectList(String curBDO) {
 
-		List<PROJECTbean> proList = new ArrayList<PROJECTbean>();
+		List<Project> proList = new ArrayList<Project>();
 
 		try (Connection conn = DButil.getConnection()) {
 
@@ -129,10 +133,11 @@ public class functionsBDO {
 				int empReq = proj.getInt("employeeRequired");
 				String dos = proj.getString("dateOfStart");
 				String doe = proj.getString("dateOfEnd");
-				String status = proj.getString("status");
+				
 				String bdosup = proj.getString("bdoSupervise");
 
-				PROJECTbean pro = new PROJECTbean(proID, name, cost, cost, wag, empReq, dos, doe, status, bdosup);
+				Project pro = new Project(countOfPro, name, cost, cost, wag, empReq, dos, doe, bdosup);
+				
 
 				proList.add(pro);
 
@@ -155,8 +160,48 @@ public class functionsBDO {
 		return proList;
 	}
 
-//Creating garm panchayat member
-	public static void insertGPM(GPMbean gpm1) {
+	
+	
+	public void deleteProject(int  pid) throws ProjectException {
+		
+		
+		try (Connection conn = DButil.getConnection()) {
+			
+			PreparedStatement ps = conn.prepareStatement("Delete from projectdb where proid=?");
+			
+			ps.setInt(1, pid);
+			
+			int res = ps.executeUpdate();
+			
+			if(res>0) {
+			
+			System.out.println("Project Removed Successfully.....!!!!!");
+			
+			}
+			
+			
+		} catch (Exception e) {
+			
+			
+			
+			System.out.println(e.getMessage());
+		}
+			
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+//Creating gram  panchayat member
+	public static void insertGPM(GpmMember gpm1) {
 
 		try (Connection conn = DButil.getConnection()) {
 
@@ -180,10 +225,12 @@ public class functionsBDO {
 		}
 	}
 
-//Viewing the gram pancayat member list
-	public static List<GPMbean> viewGPMList() {
+//Viewing the gram panchayat member list
+	
+	
+	public static List<GpmMember> viewGPMList() {
 
-		List<GPMbean> gpmList = new ArrayList<GPMbean>();
+		List<GpmMember> gpmList = new ArrayList<GpmMember>();
 
 		try (Connection conn = DButil.getConnection()) {
 
@@ -204,7 +251,7 @@ public class functionsBDO {
 				String bdo = gpm.getNString("bdoSupervise");
 				String pro = gpm.getString("proAllot");
 
-				GPMbean gpm1 = new GPMbean(gpmID, gpmName, gpmUser, gpmpass, bdo, pro);
+				GpmMember gpm1 = new GpmMember(gpmID, gpmName, gpmUser, gpmpass, bdo, pro);
 
 				gpmList.add(gpm1);
 
@@ -231,7 +278,7 @@ public class functionsBDO {
 //Alloting the project. It will display project ID and name ti choose from.
 	public static void projAndGpm(String curBDO) {
 
-//		Displaying the project available and not finshed
+
 		try (Connection conn = DButil.getConnection()) {
 
 			System.out.println("\n"

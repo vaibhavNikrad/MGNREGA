@@ -1,6 +1,6 @@
 package com.Model;
 
-public class GPMbean {
+public class GpmMember {
 
 	String gpmID;
 	String gpmName;
@@ -9,7 +9,7 @@ public class GPMbean {
 	String bdoSupervise;
     String pojAllot;
     
-	public GPMbean(String gpmID, String gpmName, String gpmUsername, String gpmPassword, String bdoSupervise,
+	public GpmMember(String gpmID, String gpmName, String gpmUsername, String gpmPassword, String bdoSupervise,
 			String pojAllot) {
 		super();
 		this.gpmID = gpmID;

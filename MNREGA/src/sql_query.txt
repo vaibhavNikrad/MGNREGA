@@ -26,17 +26,17 @@ END$$
 
 #Project details table.
 
-CREATE TABLE projectDB (proID VARCHAR(7) NOT NULL PRIMARY KEY DEFAULT '0',
-                        proName VARCHAR(20),
-                        totalCost int,
-                        balanceCost int,
-                        wagePerEmp int,
-                        employeeRequired int,
-                        dateOfStart date,
-                        dateOfEnd date,
-                        status ENUM('not_start', 'WIP', 'done') DEFAULT 'not_start',
-                        bdoSupervise VARCHAR(7),
-                        FOREIGN KEY (bdoSupervise) REFERENCES bdoDB(bdoID));
+CREATE TABLE projectDB (proID int   primary key AUTO_INCREMENT,
+proName VARCHAR(20),
+totalCost int,
+balanceCost int,
+wagePerEmp int,
+employeeRequired int,
+dateOfStart date,
+dateOfEnd date,
+bdoSupervise VARCHAR(7),
+FOREIGN KEY (bdoSupervise) REFERENCES bdoDB(bdoID));
+
 
 
 #terigger to set prefix to autoincrementing proID
@@ -46,23 +46,15 @@ CREATE TRIGGER tg_projectDB_insert
 BEFORE INSERT ON projectDB
 FOR EACH ROW
 BEGIN
-  INSERT INTO table1_seq VALUES (NULL);
-  SET NEW.proID = CONCAT('PRO', LPAD(LAST_INSERT_ID(), 3, '0'));
+INSERT INTO table1_seq VALUES (NULL);
+SET NEW.proID = CONCAT('PRO', LPAD(LAST_INSERT_ID(), 3, '0'));
 END$$
 
 
 
 #Gram Panchayat Member 
 
-CREATE TABLE gpmDB(gpmID VARCHAR(7) NOT NULL PRIMARY KEY DEFAULT '0',
-                   gpmName VARCHAR(20),
-                   gpmUsername VARCHAR(20),
-                   gpmPassword VARCHAR(8), 
-                   bdoSupervise VARCHAR(7),
-                   proAllot VARCHAR(7),
-                   FOREIGN KEY (bdoSupervise) REFERENCES bdoDB(bdoID),
-                   FOREIGN KEY (proAllot) REFERENCES projectDB(proID),
-                   UNIQUE (gpmUsername, gpmPassword));
+CREATE TABLE gpmDB(gpmID  Primary key AUTO_INCREMENT,gpmName VARCHAR(20),gpmUsername VARCHAR(20),gpmPassword VARCHAR(8), bdoSupervise VARCHAR(7),proAllot int,FOREIGN KEY (bdoSupervise) REFERENCES bdoDB(bdoID),FOREIGN KEY (proAllot) REFERENCES projectDB(proID),UNIQUE (gpmUsername, gpmPassword));
 
 #terigger to set prefix to autoincrementing gpmId
 

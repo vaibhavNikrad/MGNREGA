@@ -1,6 +1,6 @@
 package com.Model;
 
-public class EMPLOYEEbean {
+public class Employee {
 
 	String empID;
 	String empName;
@@ -10,7 +10,7 @@ public class EMPLOYEEbean {
 	String gpmSupervise;
 	String proWorking;
 	
-	public EMPLOYEEbean(String empID, String empName, String status, int wageEarned, int numOfDaysWork,
+	public Employee(String empID, String empName, String status, int wageEarned, int numOfDaysWork,
 			String gpmSupervise, String proWorking) {
 		super();
 		this.empID = empID;
