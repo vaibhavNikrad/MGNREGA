@@ -18,31 +18,71 @@ public class functionsBDO {
 
 //inserting the bdo account
 	
+//	public void insertBDO(BDO bdo1) {
+//		int out = 0;
+//		try (Connection conn = DButil.getConnection()) {
+//
+//			PreparedStatement inBDO =
+//					conn
+//					.prepareStatement("INSERT INTO bdoDB(bdoName, bdoUsername, bdoPassword) VALUES(?, ?, ?)");
+//
+//			inBDO.setString(1, bdo1.getName());
+//			inBDO.setString(2, bdo1.getUsername());
+//	
+//			inBDO.setString(3, bdo1.getPassword());
+//
+//			out = inBDO.executeUpdate();
+//
+//			if (out > 0)
+//				System.out.println("NEW Block Development Officer Account Crated");
+//
+//		} catch (SQLException e) {
+//			
+//			System.out.println(e.getMessage());
+//		}
+//
+//	}
+
 	public void insertBDO(BDO bdo1) {
-		int out = 0;
-		try (Connection conn = DButil.getConnection()) {
+	    int out = 0;
+	    try (Connection conn = DButil.getConnection()) {
+	        // Prepare the SQL statement with placeholders for the inputs
+	        PreparedStatement inBDO =
+	            conn.prepareStatement("INSERT INTO bdoDB(bdoName, bdoUsername, bdoPassword) VALUES(?, ?, ?)");
 
-			PreparedStatement inBDO =
-					conn
-					.prepareStatement("INSERT INTO bdoDB(bdoName, bdoUsername, bdoPassword) VALUES(?, ?, ?)");
+	        // Set the values for the placeholders
+	        inBDO.setString(1, bdo1.getName());
 
-			inBDO.setString(1, bdo1.getName());
-			inBDO.setString(2, bdo1.getUsername());
-	
-			inBDO.setString(3, bdo1.getPassword());
+	        // Check if the username and password are valid
+	        if (isValidUsername(bdo1.getUsername()) && isValidPassword(bdo1.getPassword())) {
+	            inBDO.setString(2, bdo1.getUsername());
+	            inBDO.setString(3, bdo1.getPassword());
+	        } else {
+	            throw new IllegalArgumentException("Invalid username or password");
+	        }
 
-			out = inBDO.executeUpdate();
+	        // Execute the SQL statement
+	        out = inBDO.executeUpdate();
 
-			if (out > 0)
-				System.out.println("NEW Block Development Officer Account Crated");
+	        if (out > 0)
+	            System.out.println("NEW Block Development Officer Account Crated");
 
-		} catch (SQLException e) {
-			
-			System.out.println(e.getMessage());
-		}
-
+	    } catch (SQLException e) {
+	        System.out.println(e.getMessage());
+	    }
 	}
 
+	// Helper methods for validation
+	private boolean isValidUsername(String username) {
+	    // Check if the username is at least 4 characters long
+	    return username.length() >= 4;
+	}
+
+	private boolean isValidPassword(String password) {
+	    // Check if the password is at least 8 characters long and contains at least one uppercase letter, one lowercase letter, and one number
+	    return password.length() >= 8 && password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$");
+	}
+	
 //Login into the bdo account
 	public static boolean loginBDO(String user, String pass) {
 
